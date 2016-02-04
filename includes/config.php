@@ -4,6 +4,9 @@ define("CARMA_REST_ENDPOINT", "carmamail.com/rest");
 interface APIConfig {
     public function getBaseAPIUrl();
     public function getAPIEndpointUrl($endpoint);
+
+    public function getAuthentification();
+    public function getHeaders();
 }
 
 class RESTAPIConfig implements APIConfig{
@@ -20,6 +23,10 @@ class RESTAPIConfig implements APIConfig{
         $this->auth = $_auth;
     }
 
+    public function getAuthentification() {
+        return $this->auth;
+    }
+
     public function getBaseAPIUrl() {
         return "http://" . $this->server_no . "." . CARMA_REST_ENDPOINT . "/" . $this->customer_id;
     }
@@ -27,5 +34,10 @@ class RESTAPIConfig implements APIConfig{
     public function getAPIEndpointUrl($endpoint)
     {
         return $this->getBaseAPIUrl() . $endpoint;
+    }
+
+    public function getHeaders()
+    {
+        return array("Accept" => "application/json");
     }
 }

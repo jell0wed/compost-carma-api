@@ -1,13 +1,11 @@
 <?php namespace CarmaAPI\config\auth;
 
 interface APIAuthentification {
-    public function getHttpHeaders();
-
     // Will be called once, before proceeding to any API request
-    public function performAuthentification($_http_client);
+    public function performAuthentification(\Httpful\Request $_req);
 
     // Will be called once, just before destructing the api object
-    public function performDeAuthentification($_http_client);
+    public function performDeAuthentification();
 }
 
 class RESTBasicAPIAuthentification implements APIAuthentification {
@@ -20,17 +18,13 @@ class RESTBasicAPIAuthentification implements APIAuthentification {
         $this->api_password = $_api_password;
     }
 
-    public function getHttpHeaders()
+
+    public function performAuthentification(\Httpful\Request $_req)
     {
-        // TODO: provide basic auth headers
+        return $_req->authenticateWith($this->api_password, $this->api_password);
     }
 
-    public function performAuthentification($_http_client)
-    {
-        // Nothing to do here
-    }
-
-    public function performDeAuthentification($_http_client)
+    public function performDeAuthentification()
     {
         // Nothing to do here
     }

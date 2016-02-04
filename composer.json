@@ -1,5 +1,6 @@
 {
     "require": {
-        "mashape/unirest-php": "^2.6"
+        "netresearch/jsonmapper": "^0.10.0",
+        "nategood/httpful": "^0.2.20"
     }
 }
