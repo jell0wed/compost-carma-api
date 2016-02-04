@@ -89,4 +89,4 @@ composer.phar
 # composer.lock
 
 
-./includes/sensitive_data
+/includes/sensitive_data
