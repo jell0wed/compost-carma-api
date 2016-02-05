@@ -11,14 +11,26 @@ use CarmaAPI\endpoints;
 class CarmaAPI {
     private $config;
     private $loaded_endpoints = array();
+    private $dynamic_endpoints = array();
 
     public function __construct(APIConfig $_conf)
     {
-        $this->config = $_conf;
+        $this->config = initializeStaticEndpoints;
         $this->initializeEndpoints();
     }
 
-    private function initializeEndpoints() {
+    public function __destruct()
+    {
+        // unload static endpoints
+
+        // unload dynamic endpoints
+    }
+
+    public function allocateEndpoint(endpoints\APIEndpoint $_endpoint) {
+        $dynamic_endpoints[] = $_endpoint;
+    }
+
+    private function initializeStaticEndpoints() {
         $this->loaded_endpoints[ENDPOINT_LISTS] = new endpoints\ListsEndpoint($this);
     }
 

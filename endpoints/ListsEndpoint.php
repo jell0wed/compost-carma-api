@@ -6,8 +6,8 @@ class ListsEndpoint extends APIEndpoint {
         parent::__construct($_api, "/lists");
     }
 
-    public function get() {
-
+    public function get($_list_id) {
+        return new ListEndpoint($this->api, $_list_id);
     }
 
     public function create() {
