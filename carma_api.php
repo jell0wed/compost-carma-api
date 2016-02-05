@@ -2,9 +2,9 @@
 
 define("ENDPOINT_LISTS", "lists");
 
-require_once(dirname(__FILE__) . "/API-endpoints.php");
-require_once(dirname(__FILE__) . "/endpoints/ListsEndpoint.php");
-require_once(dirname(__FILE__) . "/endpoints/ListEndpoint.php");
+require_once(dirname(__FILE__) . "/carma_endpoints.php");
+require_once(dirname(__FILE__) . "/endpoints/RecipientListsEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/RecipientListEndpoint.php");
 
 use CarmaAPI\config\APIConfig;
 use CarmaAPI\endpoints;
