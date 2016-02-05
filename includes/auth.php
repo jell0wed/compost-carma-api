@@ -18,10 +18,13 @@ class RESTBasicAPIAuthentification implements APIAuthentification {
         $this->api_password = $_api_password;
     }
 
-
+    /**
+     * @param \Httpful\Request $_req
+     * @return \Httpful\Request
+     */
     public function performAuthentification(\Httpful\Request $_req)
     {
-        return $_req->authenticateWith($this->api_password, $this->api_password);
+        return $_req->authenticateWith($this->api_username, $this->api_password);
     }
 
     public function performDeAuthentification()

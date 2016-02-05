@@ -1,10 +1,15 @@
 <?php namespace CarmaAPI\config;
+use CarmaAPI\config\auth\APIAuthentification;
+
 define("CARMA_REST_ENDPOINT", "carmamail.com/rest");
 
 interface APIConfig {
     public function getBaseAPIUrl();
     public function getAPIEndpointUrl($endpoint);
 
+    /**
+     * @return APIAuthentification
+     */
     public function getAuthentification();
     public function getHeaders();
 }
@@ -12,6 +17,10 @@ interface APIConfig {
 class RESTAPIConfig implements APIConfig{
     private $server_no;
     private $customer_id;
+
+    /**
+     * @var APIAuthentification
+     */
     private $auth;
 
     public function __construct($_server_no, $_customer_id) {
@@ -23,7 +32,13 @@ class RESTAPIConfig implements APIConfig{
         $this->auth = $_auth;
     }
 
+    /**
+     * @return APIAuthentification
+     */
     public function getAuthentification() {
+        if($this->auth == null) {
+            throw new \Exception("You must specifiy a authentification mechanism in order to use CarmaAPI");
+        }
         return $this->auth;
     }
 

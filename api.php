@@ -3,20 +3,27 @@
 define("ENDPOINT_LISTS", "lists");
 
 require_once(dirname(__FILE__) . "/API-endpoints.php");
+require_once(dirname(__FILE__) . "/endpoints/ListsEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/ListEndpoint.php");
 
 use CarmaAPI\config\APIConfig;
 use CarmaAPI\endpoints;
 
 class CarmaAPI {
+    /**
+     * @var APIConfig
+     */
     private $config;
+
     private $loaded_endpoints = array();
     private $dynamic_endpoints = array();
+    private $mapper;
 
     public function __construct(APIConfig $_conf)
     {
-        $this->config = initializeStaticEndpoints;
-        $this->initializeEndpoints();
+        $this->config = $_conf;
+        $this->mapper = new \JsonMapper();
+        $this->initializeStaticEndpoints();
     }
 
     public function __destruct()
@@ -34,11 +41,29 @@ class CarmaAPI {
         $this->loaded_endpoints[ENDPOINT_LISTS] = new endpoints\ListsEndpoint($this);
     }
 
+    /**
+     * @return \JsonMapper
+     */
+    public function getMapper() {
+        return $this->mapper;
+    }
+
+    /**
+     * @return endpoints\ListsEndpoint
+     */
     public function lists() {
         return $this->loaded_endpoints[ENDPOINT_LISTS];
     }
 
-    public function getRequest() {
+    /**
+     * @param $_endpoint_uri string
+     * @return \Httpful\Request
+     */
+    public function getRequest($_endpoint_uri) {
+        $get = \Httpful\Request::get($this->config->getAPIEndpointUrl($_endpoint_uri))
+                ->addHeaders($this->config->getHeaders());
 
+        $get = $this->config->getAuthentification()->performAuthentification($get);
+        return $get;
     }
 }
