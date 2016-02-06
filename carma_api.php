@@ -3,8 +3,9 @@
 define("ENDPOINT_LISTS", "lists");
 
 require_once(dirname(__FILE__) . "/carma_endpoints.php");
-require_once(dirname(__FILE__) . "/endpoints/RecipientListsEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/RecipientsListEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/RecipientListEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/ContactsListEndpoint.php");
 
 use CarmaAPI\config\APIConfig;
 use CarmaAPI\endpoints;
@@ -38,7 +39,7 @@ class CarmaAPI {
     }
 
     private function initializeStaticEndpoints() {
-        $this->loaded_endpoints[ENDPOINT_LISTS] = new endpoints\ListsEndpoint($this);
+        $this->loaded_endpoints[ENDPOINT_LISTS] = new endpoints\RecipientsListEndpoint($this);
     }
 
     /**
@@ -49,7 +50,7 @@ class CarmaAPI {
     }
 
     /**
-     * @return endpoints\ListsEndpoint
+     * @return endpoints\RecipientsListEndpoint
      */
     public function lists() {
         return $this->loaded_endpoints[ENDPOINT_LISTS];

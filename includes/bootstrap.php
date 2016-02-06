@@ -5,4 +5,5 @@ require_once(dirname(__FILE__) . "/auth.php");
 require_once(dirname(__FILE__) . "/../vendor/autoload.php");
 require_once(dirname(__FILE__) . "/../carma_api.php");
 
-require_once(dirname(__FILE__) . "/../models/RecipientList.php");
+require_once(dirname(__FILE__) . "/../models/Recipients.php");
+require_once(dirname(__FILE__) . "/../models/Contacts.php");

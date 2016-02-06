@@ -18,7 +18,7 @@ abstract class APIEndpoint {
         return $this->uri  . $_uri;
     }
 
-    protected function handleResponseErrorIfAny(\Httpful\Request $resp) {
+    protected function handleResponseErrorIfAny(\Httpful\Response $resp) {
         // TODO : check http code, throw exception
     }
 }

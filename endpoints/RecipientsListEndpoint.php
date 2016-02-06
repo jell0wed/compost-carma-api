@@ -3,7 +3,7 @@
 use CarmaAPI\constants\CarmaAPIConstants;
 use CarmaAPI\models\ListDto;
 
-class ListsEndpoint extends APIEndpoint {
+class RecipientsListEndpoint extends APIEndpoint {
     const LIST_TYPE_NORMAL = 1;
     const LIST_TYPE_TEST = 2;
 
