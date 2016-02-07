@@ -67,17 +67,18 @@ class ContactListIterator implements \Iterator {
     {
         if($this->needToReload()) {
             $last_id = 0;
-            if(count($this->currentList) <= 0) {
+            if(count($this->currentList) > 0) {
                 $last_id = array_pop($this->currentList)->id;
             }
-            echo "loading lastId = " . $last_id;
+
             unset($this->currentList);
             $this->currentList = $this->currentListEndpoint->get(ContactsListEndpoint::DEFAULT_INCLUDE_PROPERTIES, $this->listPageSize, $last_id);
-            //var_dump($this->currentList);
-            //exit;
+            if($this->currIndex == -1) {
+                $this->currIndex = 0;
+            }
         }
 
-        return count($this->currentList) > 0;
+        return !is_null($this->current());
     }
 
     /**
