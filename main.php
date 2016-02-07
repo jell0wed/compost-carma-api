@@ -13,4 +13,6 @@ $api = new \CarmaAPI\CarmaAPI($cfg);
 foreach($api->lists()->getById(14242)->contacts()->iterator() as $contact) {
     $contact = $api->lists()->getById(14242)->contacts()->getByOriginalId($contact->originalId);
     echo $contact->get()->emailAddress . " - " . $contact->subscriptionStatus()->status . "\n";
+
+    var_dump($contact->messages(100));
 }

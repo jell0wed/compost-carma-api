@@ -10,4 +10,7 @@ abstract class CarmaAPIConstants {
     const CONTACTS_LIST_ITERATOR_ALL = "all";
     const CONTACTS_LIST_ITERATOR_BOUNCED = "bounced";
     const CONTACTS_LIST_ITERATOR_UNSUBSCRIBED = "unsubscribed";
+
+    const CONTACT_MESSAGES_URL_GENERATES_STATS = "true";
+    const CONTACT_MESSAGES_URL_DONT_GENERATES_STATS = "false";
 }

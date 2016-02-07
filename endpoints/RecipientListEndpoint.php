@@ -29,4 +29,11 @@ class RecipientListEndpoint extends APIEndpoint {
     public function contacts() {
         return new ContactsListEndpoint($this->api, $this, $this->list_id);
     }
+
+    public function messages() {
+        $resp = $this->api->getRequest($this->getUri("/messages"))->send();
+        $this->handleResponseErrorIfAny($resp);
+
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\MessageDto');
+    }
 }

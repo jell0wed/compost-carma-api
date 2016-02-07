@@ -8,3 +8,4 @@ require_once(dirname(__FILE__) . "/../carma_api.php");
 require_once(dirname(__FILE__) . "/../models/Recipients.php");
 require_once(dirname(__FILE__) . "/../models/Contacts.php");
 require_once(dirname(__FILE__) . "/../models/UnsubscribeUrl.php");
+require_once(dirname(__FILE__) . "/../models/Messages.php");
