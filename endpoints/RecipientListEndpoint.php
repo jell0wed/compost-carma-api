@@ -1,6 +1,7 @@
 <?php namespace CarmaAPI\endpoints;
 
 use CarmaAPI\models\ListDto;
+use CarmaAPI\models\UnsubscribeUrlDto;
 
 class RecipientListEndpoint extends APIEndpoint {
     private $list_id;
@@ -13,10 +14,19 @@ class RecipientListEndpoint extends APIEndpoint {
 
     public function get() {
         $resp = $this->api->getRequest($this->getUri(""))->send();
+        $this->handleResponseErrorIfAny($resp);
+
         return $this->api->getMapper()->map($resp->body, new ListDto());
     }
 
+    public function unsubscribeUrl() {
+        $resp = $this->api->getRequest($this->getUri("/unsubscribeurl"))->send();
+        $this->handleResponseErrorIfAny($resp);
+
+        return $this->api->getMapper()->map($resp->body, new UnsubscribeUrlDto());
+    }
+
     public function contacts() {
-        return new ContactsListEndpoint($this->api, $this->list_id);
+        return new ContactsListEndpoint($this->api, $this, $this->list_id);
     }
 }

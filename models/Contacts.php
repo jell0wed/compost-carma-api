@@ -56,3 +56,13 @@ class ContactDto {
      */
     public $properties;
 }
+
+class BounceStatusDto {
+    public $status;
+}
+
+class SubscriptionStatusDto {
+    public $status;
+
+    public $mobileStatus;
+}
