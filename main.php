@@ -17,5 +17,5 @@ $api = new \CarmaAPI\CarmaAPI($cfg);
     var_dump($contact->messages(100));
 }*/
 
-var_dump($api->triggers()->getAll());
+var_dump($api->triggers()->getById(3422)->messages());
 

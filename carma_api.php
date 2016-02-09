@@ -9,6 +9,7 @@ require_once(dirname(__FILE__) . "/endpoints/ContactsListEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/ContactEndpoint.php");
 
 require_once(dirname(__FILE__) . "/endpoints/TriggersEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/TriggerEndpoint.php");
 
 use CarmaAPI\config\APIConfig;
 use CarmaAPI\endpoints;

@@ -3,6 +3,7 @@
 use CarmaAPI\constants\CarmaAPIConstants;
 use CarmaAPI\models\BounceStatusDto;
 use CarmaAPI\models\ContactDto;
+use CarmaAPI\models\MessageDto;
 use CarmaAPI\models\SubscriptionStatusDto;
 
 class ContactEndpoint extends APIEndpoint {
@@ -45,11 +46,12 @@ class ContactEndpoint extends APIEndpoint {
     }
 
     // TODO : implement start date
-    public function messages($_no_of_messages, $_no_stats = CarmaAPIConstants::CONTACT_MESSAGES_URL_GENERATES_STATS) {
-        $resp = $this->api->getRequest($this->getUri("/messages?nostat={$_no_stats}&noOfMessages={$_no_of_messages}"))->send();
+    public function messages($_params = array()) {
+        $endpoint = "/messages" . MessageDto::generateQueryParams($_params);
+        $resp = $this->api->getRequest($this->getUri($endpoint))->send();
         $this->handleResponseErrorIfAny($resp);
 
-        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\MessageDto');
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\MessageDto')->getArrayCopy();
     }
 
 }

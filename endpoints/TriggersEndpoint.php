@@ -13,6 +13,14 @@ class TriggersEndpoint extends APIEndpoint {
         $resp = $this->api->getRequest($this->getUri($endpoint))->send();
         $this->handleResponseErrorIfAny($resp);
 
-        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\TriggerDto');
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\TriggerDto')->getArrayCopy();
+    }
+
+    /**
+     * @param $_trigger_id
+     * @return TriggerEndpoint
+     */
+    public function getById($_trigger_id) {
+        return new TriggerEndpoint($this->api, $_trigger_id);
     }
 }

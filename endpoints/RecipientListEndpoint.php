@@ -34,6 +34,6 @@ class RecipientListEndpoint extends APIEndpoint {
         $resp = $this->api->getRequest($this->getUri("/messages"))->send();
         $this->handleResponseErrorIfAny($resp);
 
-        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\MessageDto');
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\MessageDto')->getArrayCopy();
     }
 }

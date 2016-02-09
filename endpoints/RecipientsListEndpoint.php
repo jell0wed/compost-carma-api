@@ -19,7 +19,7 @@ class RecipientsListEndpoint extends APIEndpoint {
         $resp = $this->api->getRequest($this->getUri("?typeId=" . $_type))->send();
         $this->handleResponseErrorIfAny($resp);
 
-        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\ListDto');
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\ListDto')->getArrayCopy();
     }
 
     public function getById($_id) {
