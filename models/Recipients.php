@@ -1,5 +1,7 @@
 <?php namespace CarmaAPI\models;
 
+use CarmaAPI\utils\CarmaAPIUtils;
+
 class Permissions {
     public $read;
 
@@ -54,6 +56,8 @@ class ListBreakDown {
 }
 
 class ListDto {
+    const PARAM_LISTS_DEFAULT_TYPE_TEST = 2;
+    const PARAM_LISTS_DEFAULT_TYPE_NORMAL = 1;
     /**
      * @var Permissions
      */
@@ -93,4 +97,10 @@ class ListDto {
     public $mobileNumbers;
 
     public $pushIds;
+
+    public static function generateQueryParams($_params = array()) {
+        $typeId = CarmaAPIUtils::extractParameter($_params, "typeId", self::PARAM_LISTS_DEFAULT_TYPE_NORMAL);
+
+        return "?typeId={$typeId}";
+    }
 }

@@ -3,22 +3,26 @@ namespace CarmaAPI\endpoints\iterators;
 use CarmaAPI\constants\CarmaAPIConstants;
 use CarmaAPI\endpoints\ContactsListEndpoint;
 use CarmaAPI\models\ContactDto;
+use CarmaAPI\utils\CarmaAPIUtils;
 
 class ContactListIterator implements \Iterator {
     private $currentListEndpoint = null;
     /**
      * @var ContactDto[]
      */
-    private $currentList = array();
-    private $listPageSize = 0;
-    private $mode = CarmaAPIConstants::CONTACTS_LIST_ITERATOR_ALL;
-    private $currIndex = 0;
+    private $params = array();
+    private $mode = ContactDto::PARAM_CONTACTS_LIST_MODE_ALL;
 
-    public function __construct(ContactsListEndpoint $_endpoint, $_mode, $_list_size)
+    private $currentList = array();
+    private $currIndex = 0;
+    private $listPageSize = 0;
+
+    public function __construct(ContactsListEndpoint $_endpoint, $_mode, $_params)
     {
         $this->mode = $_mode;
-        $this->listPageSize = $_list_size;
+        $this->params = $_params;
         $this->currentListEndpoint = $_endpoint;
+        $this->listPageSize = CarmaAPIUtils::extractParameter($_params, "pageSize", ContactDto::PARAM_CONTACTS_LIST_DEFAULT_PAGESIZE);
     }
 
     private function needToReload() {
@@ -74,10 +78,11 @@ class ContactListIterator implements \Iterator {
             }
 
             unset($this->currentList);
-            $this->currentList = $this->currentListEndpoint->getAll(
-                $this->mode,
-                ContactsListEndpoint::DEFAULT_INCLUDE_PROPERTIES,
-                $this->listPageSize, $last_id);
+
+            $params = $this->params;
+            $params["lastId"] = $last_id;
+
+            $this->currentList = $this->currentListEndpoint->getAll($this->mode, $params);
 
             if($this->currIndex == -1) {
                 $this->currIndex = 0;
@@ -102,13 +107,11 @@ class ContactListIterator implements \Iterator {
 namespace CarmaAPI\endpoints;
 use CarmaAPI\constants\CarmaAPIConstants;
 use CarmaAPI\endpoints\iterators\ContactListIterator;
+use CarmaAPI\models\ContactDto;
 
 class ContactsListEndpoint extends APIEndpoint {
     private $list_id;
     private $recipients_list_endpoint = null;
-
-    const DEFAULT_PAGE_SIZE = 1000;
-    const DEFAULT_INCLUDE_PROPERTIES = true;
 
     public function __construct(\CarmaAPI\CarmaAPI $_api, RecipientListEndpoint $_rcpt_list_endpoint, $_list_id)
     {
@@ -119,16 +122,16 @@ class ContactsListEndpoint extends APIEndpoint {
 
     public function getListId() { return $this->list_id; }
 
-    public function getAll($_mode = CarmaAPIConstants::CONTACTS_LIST_ITERATOR_ALL, $_include_properties = self::DEFAULT_INCLUDE_PROPERTIES, $_page_size = self::DEFAULT_PAGE_SIZE, $_last_id = -1) {
-        $_include_properties = $_include_properties ? "true" : "false";
-        $resp = $this->api->getRequest($this->getUri("/{$_mode}?pageSize={$_page_size}&lastId={$_last_id}&includeProperties={$_include_properties}"))->send();
+    public function getAll($_mode = ContactDto::PARAM_CONTACTS_LIST_MODE_ALL, $_params = array()) {
+        $endpoint = "/{$_mode}" . ContactDto::generateQueryParams($_params);
+        $resp = $this->api->getRequest($this->getUri($endpoint))->send();
         $this->handleResponseErrorIfAny($resp);
 
         return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\ContactDto')->getArrayCopy();
     }
 
-    public function iterator($_mode = CarmaAPIConstants::CONTACTS_LIST_ITERATOR_ALL, $_page_size = self::DEFAULT_PAGE_SIZE) {
-        return new ContactListIterator($this, $_mode, $_page_size);
+    public function iterator($_mode = ContactDto::PARAM_CONTACTS_LIST_MODE_ALL, $_params = array()) {
+        return new ContactListIterator($this, $_mode, $_params);
     }
 
     public function getByOriginalId($original_id) {

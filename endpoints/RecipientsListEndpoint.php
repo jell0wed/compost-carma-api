@@ -15,8 +15,9 @@ class RecipientsListEndpoint extends APIEndpoint {
     /**
      * @return ListDto[]
      */
-    public function getAll($_type = CarmaAPIConstants::LISTS_TYPE_NORMAL) {
-        $resp = $this->api->getRequest($this->getUri("?typeId=" . $_type))->send();
+    public function getAll($_params = array()) {
+        $endpoint = "/" . ListDto::generateQueryParams($_params);
+        $resp = $this->api->getRequest($this->getUri($endpoint))->send();
         $this->handleResponseErrorIfAny($resp);
 
         return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\ListDto')->getArrayCopy();
