@@ -9,3 +9,4 @@ require_once(dirname(__FILE__) . "/../models/Recipients.php");
 require_once(dirname(__FILE__) . "/../models/Contacts.php");
 require_once(dirname(__FILE__) . "/../models/UnsubscribeUrl.php");
 require_once(dirname(__FILE__) . "/../models/Messages.php");
+require_once(dirname(__FILE__) . "/../models/Triggers.php");

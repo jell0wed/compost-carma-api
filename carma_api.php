@@ -1,17 +1,21 @@
 <?php namespace CarmaAPI;
 
-define("ENDPOINT_LISTS", "lists");
 
 require_once(dirname(__FILE__) . "/carma_endpoints.php");
+
 require_once(dirname(__FILE__) . "/endpoints/RecipientsListEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/RecipientListEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/ContactsListEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/ContactEndpoint.php");
 
+require_once(dirname(__FILE__) . "/endpoints/TriggersEndpoint.php");
+
 use CarmaAPI\config\APIConfig;
 use CarmaAPI\endpoints;
 
 class CarmaAPI {
+    const ENDPOINT_LISTS = "lists";
+    const ENDPOINT_TRIGGERS = "triggers";
     /**
      * @var APIConfig
      */
@@ -40,7 +44,8 @@ class CarmaAPI {
     }
 
     private function initializeStaticEndpoints() {
-        $this->loaded_endpoints[ENDPOINT_LISTS] = new endpoints\RecipientsListEndpoint($this);
+        $this->loaded_endpoints[self::ENDPOINT_LISTS] = new endpoints\RecipientsListEndpoint($this);
+        $this->loaded_endpoints[self::ENDPOINT_TRIGGERS] = new endpoints\TriggersEndpoint($this);
     }
 
     /**
@@ -54,7 +59,14 @@ class CarmaAPI {
      * @return endpoints\RecipientsListEndpoint
      */
     public function lists() {
-        return $this->loaded_endpoints[ENDPOINT_LISTS];
+        return $this->loaded_endpoints[self::ENDPOINT_LISTS];
+    }
+
+    /**
+     * @return endpoints\TriggersEndpoint
+     */
+    public function triggers() {
+        return $this->loaded_endpoints[self::ENDPOINT_TRIGGERS];
     }
 
     /**
