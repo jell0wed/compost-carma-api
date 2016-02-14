@@ -3,6 +3,7 @@ namespace CarmaAPI\endpoints\iterators;
 use CarmaAPI\constants\CarmaAPIConstants;
 use CarmaAPI\endpoints\ContactsListEndpoint;
 use CarmaAPI\models\ContactDto;
+use CarmaAPI\urls\ContactsListUrl;
 use CarmaAPI\utils\CarmaAPIUtils;
 
 class ContactListIterator implements \Iterator {
@@ -11,7 +12,7 @@ class ContactListIterator implements \Iterator {
      * @var ContactDto[]
      */
     private $params = array();
-    private $mode = ContactDto::PARAM_CONTACTS_LIST_MODE_ALL;
+    private $mode = ContactsListUrl::LIST_MODE_ALL;
 
     private $currentList = array();
     private $currIndex = 0;
@@ -22,7 +23,7 @@ class ContactListIterator implements \Iterator {
         $this->mode = $_mode;
         $this->params = $_params;
         $this->currentListEndpoint = $_endpoint;
-        $this->listPageSize = CarmaAPIUtils::extractParameter($_params, "pageSize", ContactDto::PARAM_CONTACTS_LIST_DEFAULT_PAGESIZE);
+        $this->listPageSize = CarmaAPIUtils::extractParameter($_params, "pageSize", ContactsListUrl::PARAM_PAGESIZE_DEFAULT);
     }
 
     private function needToReload() {
@@ -108,6 +109,7 @@ namespace CarmaAPI\endpoints;
 use CarmaAPI\constants\CarmaAPIConstants;
 use CarmaAPI\endpoints\iterators\ContactListIterator;
 use CarmaAPI\models\ContactDto;
+use CarmaAPI\urls\ContactsListUrl;
 
 class ContactsListEndpoint extends APIEndpoint {
     private $list_id;
@@ -117,25 +119,26 @@ class ContactsListEndpoint extends APIEndpoint {
     {
         $this->recipients_list_endpoint = $_rcpt_list_endpoint;
         $this->list_id = $_list_id;
-        parent::__construct($_api, "/lists/" . $_list_id . "/contacts");
+        parent::__construct($_api);
     }
 
     public function getListId() { return $this->list_id; }
 
-    public function getAll($_mode = ContactDto::PARAM_CONTACTS_LIST_MODE_ALL, $_params = array()) {
-        $endpoint = "/{$_mode}" . ContactDto::generateQueryParams($_params);
-        $resp = $this->api->getRequest($this->getUri($endpoint))->send();
+    public function getAll($_mode = ContactsListUrl::LIST_MODE_ALL, $_params = array()) {
+
+
+        $resp = $this->api->getRequest(new ContactsListUrl($this->list_id, $_mode, $_params))->send();
         $this->handleResponseErrorIfAny($resp);
 
         return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\ContactDto')->getArrayCopy();
     }
 
-    public function iterator($_mode = ContactDto::PARAM_CONTACTS_LIST_MODE_ALL, $_params = array()) {
+    public function iterator($_mode = ContactsListUrl::LIST_MODE_ALL, $_params = array()) {
         return new ContactListIterator($this, $_mode, $_params);
     }
 
     public function getByOriginalId($original_id) {
-        return new ContactEndpoint($this->api, $this, $original_id);
+        return new ContactIdEndpoint($this->api, $this, $original_id);
     }
 
 }

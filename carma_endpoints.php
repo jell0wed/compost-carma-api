@@ -1,24 +1,27 @@
 <?php namespace CarmaAPI\endpoints;
 
+require_once(dirname(__FILE__) . "/endpoints/RecipientsListEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/RecipientListEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/ContactsListEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/ContactIdEndpoint.php");
+
+require_once(dirname(__FILE__) . "/endpoints/TriggersEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/TriggerEndpoint.php");
+
 use CarmaAPI\CarmaAPI;
+use CarmaAPI\urls\CarmaAPIUrl;
 
 abstract class APIEndpoint {
-    protected $uri;
     protected $api;
 
-    protected function __construct(CarmaAPI $_api, $_endpoint_uri)
+    protected function __construct(CarmaAPI $_api)
     {
         $this->api = $_api;
-        $this->uri = $_endpoint_uri;
 
         $this->api->allocateEndpoint($this);
     }
 
-    protected function getUri($_uri) {
-        return $this->uri  . $_uri;
-    }
-
     protected function handleResponseErrorIfAny(\Httpful\Response $resp) {
-        // TODO : check http code, throw exception
+        // TODO : check http code, throw exception; proper exception handling
     }
 }

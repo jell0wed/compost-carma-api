@@ -1,6 +1,7 @@
 {
     "require": {
         "netresearch/jsonmapper": "^0.10.0",
-        "nategood/httpful": "^0.2.20"
+        "nategood/httpful": "^0.2.20",
+        "jwage/purl": "^0.0.6"
     }
 }

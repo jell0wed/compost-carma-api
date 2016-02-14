@@ -1,6 +1,7 @@
 <?php
 
 use CarmaAPI\config\RESTAPIConfig;
+use CarmaAPI\urls\CarmaAPIUrl;
 
 include("includes/bootstrap.php");
 $creds = explode("|", file_get_contents("./credentials.txt"));
@@ -17,5 +18,6 @@ $api = new \CarmaAPI\CarmaAPI($cfg);
     var_dump($contact->messages(100));
 }*/
 
-var_dump($api->triggers()->getById(3422)->messages());
+//var_dump($api->triggers()->getById(3422)->messages());
 
+//var_dump(parse_url("http://google.ca?test=t&test2=33"));
