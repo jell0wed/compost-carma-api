@@ -15,11 +15,19 @@ class CarmaAPIUrl {
         $this->url_construct = new \Purl\Url($_path);
     }
 
+    public function addPath($_path) {
+        $this->url_construct->path->add($_path);
+        return $this;
+    }
 
-    public function stringify($_query_params_func, $_path_params_func) {
-        $this->url_construct->setQuery($_query_params_func($this->url_construct->query));
-        $this->url_construct->setPath($_path_params_func($this->url_construct->path));
+    public function addQuery($_query, $_value) {
+        if(!is_null($_value) && !is_null($_query)) {
+            $this->url_construct->query->set($_query, $_value);
+        }
+        return $this;
+    }
 
+    public function stringify() {
         return $this->url_construct->getUrl();
     }
 }

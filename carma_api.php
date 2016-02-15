@@ -68,8 +68,8 @@ class CarmaAPI {
      * @return \Httpful\Request
      */
     public function getRequest(CarmaAPIUrl $_api_url = null) {
-        $concrete_url = $_api_url->stringify($this->config->getBaseAPIUrl());
-        $get = \Httpful\Request::get($this->config->getAPIEndpointUrl($concrete_url))
+        $concrete_url = $_api_url->stringify();
+        $get = \Httpful\Request::get($concrete_url)
                 ->addHeaders($this->config->getHeaders());
 
         $get = $this->config->getAuthentification()->performAuthentification($get);
