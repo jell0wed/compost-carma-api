@@ -9,12 +9,12 @@ class ContactsListEndpoint extends APIEndpoint {
     private $recipients_list_endpoint = null;
     private $base_url;
 
-    public function __construct(\CarmaAPI\CarmaAPI $_api, RecipientListEndpoint $_rcpt_list_endpoint, $_list_id)
+    public function __construct(\CarmaAPI\CarmaAPI $_api, RecipientListEndpoint $_rcpt_list_endpoint, $_list_identifier)
     {
         parent::__construct($_api);
 
         $this->recipients_list_endpoint = $_rcpt_list_endpoint;
-        $this->list_id = $_list_id;
+        $this->list_id = $_list_identifier;
         $this->base_url = $this->api->createUrl(CarmaAPI::ENDPOINT_LISTS)
                                     ->addPath($this->list_id)
                                     ->addPath("contacts");
@@ -60,8 +60,12 @@ class ContactsListEndpoint extends APIEndpoint {
         return new ContactListIterator($this, $_mode, $_params);
     }
 
-    public function getByOriginalId($original_id) {
-        return new ContactIdEndpoint($this->api, $this, $original_id);
+    public function getByOriginalId($_original_id) {
+        return new ContactIdentifiedByOriginalIdEndpoint($this->api, $this, $_original_id);
+    }
+
+    public function getById($_identifier) {
+        return new ContactIdentifiedByIdEndpoint($this->api, $this, $_identifier);
     }
 
 }

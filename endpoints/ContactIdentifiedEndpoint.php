@@ -5,22 +5,22 @@ use CarmaAPI\models\BounceStatusDto;
 use CarmaAPI\models\ContactDto;
 use CarmaAPI\models\SubscriptionStatusDto;
 
-class ContactIdEndpoint extends APIEndpoint {
+abstract class ContactIdentifiedEndpoint extends APIEndpoint {
     private $list_endpoint;
-    private $identifier;
     private $base_url;
 
-    public function __construct(\CarmaAPI\CarmaAPI $_api, ContactsListEndpoint $_list_endpoint, $_id)
+    public function __construct(\CarmaAPI\CarmaAPI $_api, ContactsListEndpoint $_list_endpoint)
     {
         parent::__construct($_api);
 
-        $this->identifier = $_id;
         $this->list_endpoint = $_list_endpoint;
         $this->base_url = $this->api->createUrl(CarmaAPI::ENDPOINT_LISTS)
                                     ->addPath($this->list_endpoint->getListId())
                                     ->addPath("contacts")
-                                    ->addPath($this->identifier);
+                                    ->addPath($this->getIdentifier());
     }
+
+    protected abstract function getIdentifier();
 
     /**
      * @return ContactDto
@@ -71,4 +71,33 @@ class ContactIdEndpoint extends APIEndpoint {
         return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\MessageDto')->getArrayCopy();
     }
 
+}
+
+class ContactIdentifiedByIdEndpoint extends ContactIdentifiedEndpoint {
+    private $identifier;
+    public function __construct(CarmaAPI $_api, ContactsListEndpoint $_list_endpoint, $_identifier)
+    {
+        parent::__construct($_api, $_list_endpoint);
+        $this->identifier = $_identifier;
+    }
+
+    protected function getIdentifier()
+    {
+        return $this->identifier;
+    }
+}
+
+class ContactIdentifiedByOriginalIdEndpoint extends ContactIdentifiedEndpoint {
+    private $original_id;
+
+    public function __construct(CarmaAPI $_api, ContactsListEndpoint $_list_endpoint, $_original_id)
+    {
+        parent::__construct($_api, $_list_endpoint);
+        $this->original_id = $_original_id;
+    }
+
+    protected function getIdentifier()
+    {
+        return $this->original_id;
+    }
 }
