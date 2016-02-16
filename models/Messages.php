@@ -36,13 +36,6 @@ class MessageDto {
     public $name;
 
     public $archived;
-
-    public static function generateQueryParams($_params) {
-        $no_stats = CarmaAPIUtils::extractParameter($_params, "nostat", self::PARAM_MESSAGES_URLS_DO_GENERATE_STATS);
-        $no_of_messages = CarmaAPIUtils::extractParameter($_params, "noOfMessages", self::PARAM_MESSAGES_NO_OF_MESSAGES);
-
-        return "?nostat={$no_stats}&noOfMessages={$no_of_messages}";
-    }
 }
 
 class MessageActions {
@@ -61,4 +54,14 @@ class MessageActions {
     public $unsubscribed;
 
     public $complaint;
+}
+
+class MessageCountDto {
+    public $normal;
+
+    public $trigger;
+
+    public $auto;
+
+    public $total;
 }
