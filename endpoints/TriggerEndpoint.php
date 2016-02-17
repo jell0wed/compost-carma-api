@@ -2,6 +2,7 @@
 
 use CarmaAPI\CarmaAPI;
 use CarmaAPI\models\MessageDto;
+use CarmaAPI\models\TriggerDto;
 use CarmaAPI\utils\CarmaAPIUtils;
 
 class TriggerEndpoint extends APIEndpoint {
@@ -15,6 +16,15 @@ class TriggerEndpoint extends APIEndpoint {
         $this->trigger_id = $_trigger_id;
         $this->base_url = $this->api->createUrl(CarmaAPI::ENDPOINT_TRIGGERS)
                                     ->addPath($this->trigger_id);
+    }
+
+    public function get() {
+        $url = $this->base_url;
+
+        $resp = $this->api->getRequest($url)->send();
+        $this->handleResponseErrorIfAny($resp);
+
+        return $this->api->getMapper()->map($resp->body, new TriggerDto());
     }
 
     const PARAM_NAME_NO_STAT = "nostat";
@@ -34,5 +44,35 @@ class TriggerEndpoint extends APIEndpoint {
         $this->handleResponseErrorIfAny($resp);
 
         return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\MessageDto')->getArrayCopy();
+    }
+
+    public function campaigns() {
+        $url = $this->base_url;
+        $url->addPath("campaigns");
+
+        $resp = $this->api->getRequest($url)->send();
+        $this->handleResponseErrorIfAny($resp);
+
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\CampaignVersionDto')->getArrayCopy();
+    }
+
+    public function links() {
+        $url = $this->base_url;
+        $url->addPath("links");
+
+        $resp = $this->api->getRequest($url)->send();
+        $this->handleResponseErrorIfAny($resp);
+
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\LinkDto')->getArrayCopy();
+    }
+
+    public function tags() {
+        $url = $this->base_url;
+        $url->addPath("tags");
+
+        $resp = $this->api->getRequest($url)->send();
+        $this->handleResponseErrorIfAny($resp);
+
+        return $this->api->getMapper()->mapArray($resp->body, new \ArrayObject(), '\CarmaAPI\models\BlockLinkTagDto')->getArrayCopy();
     }
 }
