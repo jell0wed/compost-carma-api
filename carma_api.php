@@ -10,6 +10,7 @@ use CarmaAPI\urls\CarmaAPIUrl;
 class CarmaAPI {
     const ENDPOINT_LISTS = "lists";
     const ENDPOINT_TRIGGERS = "triggers";
+    const ENDPOINT_PROPERTIES = "properties";
 
     /**
      * @var APIConfig
@@ -40,6 +41,7 @@ class CarmaAPI {
     private function initializeStaticEndpoints() {
         $this->loaded_endpoints[self::ENDPOINT_LISTS] = new endpoints\RecipientsListEndpoint($this);
         $this->loaded_endpoints[self::ENDPOINT_TRIGGERS] = new endpoints\TriggersEndpoint($this);
+        $this->loaded_endpoints[self::ENDPOINT_PROPERTIES] = new endpoints\PropertiesEndpoint($this);
     }
 
     /**

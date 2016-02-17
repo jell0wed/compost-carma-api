@@ -3,10 +3,13 @@
 require_once(dirname(__FILE__) . "/endpoints/RecipientsListEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/RecipientListEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/ContactsListEndpoint.php");
-require_once(dirname(__FILE__) . "/endpoints/ContactIdEndpoint.php");
+require_once(dirname(__FILE__) . "/endpoints/ContactIdentifiedEndpoint.php");
+
 
 require_once(dirname(__FILE__) . "/endpoints/TriggersEndpoint.php");
 require_once(dirname(__FILE__) . "/endpoints/TriggerEndpoint.php");
+
+require_once(dirname(__FILE__) . "/endpoints/PropertiesEndpoint.php");
 
 use CarmaAPI\CarmaAPI;
 use CarmaAPI\urls\CarmaAPIUrl;

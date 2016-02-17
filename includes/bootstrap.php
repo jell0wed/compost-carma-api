@@ -14,3 +14,4 @@ require_once(dirname(__FILE__) . "/../models/Messages.php");
 require_once(dirname(__FILE__) . "/../models/Triggers.php");
 require_once(dirname(__FILE__) . "/../models/Bounce.php");
 require_once(dirname(__FILE__) . "/../models/Campaigns.php");
+require_once(dirname(__FILE__) . "/../models/Properties.php");
